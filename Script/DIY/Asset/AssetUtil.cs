@@ -37,5 +37,13 @@ namespace DIY.Asset
             return File.OpenText(_path);
         }
 
+        public static bool SafeDelete(string _pathWithName) {
+            if (!File.Exists(_pathWithName))
+            {
+                return false;
+            }
+            File.Delete(_pathWithName);
+            return true;
+        }
     }
 }

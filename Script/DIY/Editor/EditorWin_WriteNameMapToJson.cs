@@ -7,6 +7,7 @@ using System.Collections;
 using System.Text;
 using DIY.Json;
 using DIY.Asset;
+using DIY.UI;
 
 namespace DIY.Editor
 {
@@ -81,17 +82,23 @@ namespace DIY.Editor
                 {
                     if (GUILayout.Button("创建", GUILayout.Width(100)))
                     {
-                        
+                        JsonData nameTree = UIUtil.AutoBindNameTree(_prefab.transform);
+                        JsonUtil.WriteOrCreateJson(jsonPath, nameTree);
+                        break;
                     }
                 }
                 else {
                     if (GUILayout.Button("覆盖", GUILayout.Width(100)))
                     {
-                        
+                        JsonData nameTree = UIUtil.AutoBindNameTree(_prefab.transform);
+                        JsonUtil.WriteOrCreateJson(jsonPath, nameTree);
+                        break;
                     }
                     if (GUILayout.Button("删除", GUILayout.Width(100)))
                     {
-
+                        AssetUtil.SafeDelete(jsonPath);
+                        removeClick = _prefab.transform;
+                        break;
                     }
                 }
                 GUILayout.EndHorizontal();
