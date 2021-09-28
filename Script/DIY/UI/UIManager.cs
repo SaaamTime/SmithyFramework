@@ -9,26 +9,19 @@ namespace DIY.UI
         public Canvas mainCanvas;
         public Dictionary<string, UIPanel> dic_panels;
 
-
-
-
-
-
-        private void Awake()
+        public override void Reset()
         {
-            InitInstance();
+            //TODO:可能需要各个界面的清空与中断
+            dic_panels.Clear();
         }
 
-        // Start is called before the first frame update
-        void Start()
+        protected override void Init()
         {
-
+            dic_panels = new Dictionary<string, UIPanel>();
         }
 
-        // Update is called once per frame
-        void Update()
-        {
+        
 
-        }
+        
     }
 }
