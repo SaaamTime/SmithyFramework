@@ -10,14 +10,16 @@ using DIY.Asset;
 using DIY.UI;
 using System;
 using UnityEngine.UI;
+using System.Reflection;
 
 namespace DIY.Editor
 {
     public class EditorWin_CreatBindScript : EditorWindow
     {
         //需要生成曲线的动画片段索引
-        public GameObject  targetPrefab;
+        public GameObject targetPrefab;
         public string bindScriptString;
+        public string stateScriptString;
         public Dictionary<Type, string> dic_bindScriptMap;
         public Dictionary<Type, string> dic_stateScriptMap;
 
@@ -30,7 +32,8 @@ namespace DIY.Editor
         [MenuItem("Tools/组件工具/自动生成绑定脚本语言")]
         static void main()
         {
-            EditorWindow.GetWindow<EditorWin_WriteNameMapToJson>("NameMap记录为Json");
+            EditorWindow.GetWindow<EditorWin_CreatBindScript>("自动生成绑定脚本语言");
+            
             // Debug.Log(Application.dataPath);
         }
 
@@ -41,11 +44,6 @@ namespace DIY.Editor
             //展示曲线保存的重要参数：保存路径，json文件名
             EditorGUILayout.BeginVertical();
             GUILayout.Space(50);
-            //if (GUILayout.Button("断点测试游戏内读取曲线"))
-            //{
-            //    //AnimationCurveChanger.Instance.ReadAnimationCurveDataJson();
-            //    AnimationCurveChanger.Instance.Reinit();
-            //}
             //动态拖拽需要保存曲线的动画文件
             Rect pathRect = EditorGUILayout.GetControlRect(GUILayout.Width(300), GUILayout.Height(30));
             EditorGUI.TextField(pathRect, "需要生成绑定脚本的预设体(拖拽)");
@@ -63,115 +61,61 @@ namespace DIY.Editor
             }
 
             targetPrefab = (GameObject)dragClips[0];
-            JsonData nameTree = UIUtil.AutoBindNameTree(targetPrefab.transform);
+            AutoCreateScriptString(targetPrefab.transform);
             return pathRect.position;
         }
 
-        /// <summary>
-        /// 展示已经拖拽好的动画片段名单
-        /// </summary>
-        //private void WindowView_AutoShowPrefabs()
-        //{
-        //    GUILayout.BeginVertical();
-        //    Transform removeClick = null;
-        //    foreach (GameObject _prefab in prefabs)
-        //    {
-        //        GUILayout.BeginHorizontal("HelpBox");
-        //        GUILayout.Label("预设体名称：" + _prefab.name, GUILayout.ExpandWidth(false));
-        //        if (GUILayout.Button("除名", GUILayout.Width(100)))
-        //        {
-        //            removeClick = _prefab.transform;
-        //            break;
-        //        }
-        //        //TODO:到这了，这里应该是直接找Json，看有么有这个文件，如果有的话：显示覆盖，如果没有：显示创建
-        //        string prefabPath = AssetDatabase.GetAssetPath(_prefab);
-        //        string jsonPath = prefabPath.Replace(".prefab",".json");
-        //        Object jsonAsset = AssetDatabase.LoadAssetAtPath<Object>(jsonPath);
-        //        if (jsonAsset == null)
-        //        {
-        //            if (GUILayout.Button("创建", GUILayout.Width(100)))
-        //            {
-        //                JsonData nameTree = UIUtil.AutoBindNameTree(_prefab.transform);
-        //                JsonUtil.WriteOrCreateJson(jsonPath, nameTree);
-        //                break;
-        //            }
-        //        }
-        //        else {
-        //            if (GUILayout.Button("覆盖", GUILayout.Width(100)))
-        //            {
-        //                JsonData nameTree = UIUtil.AutoBindNameTree(_prefab.transform);
-        //                JsonUtil.WriteOrCreateJson(jsonPath, nameTree);
-        //                break;
-        //            }
-        //            if (GUILayout.Button("删除", GUILayout.Width(100)))
-        //            {
-        //                AssetUtil.SafeDelete(jsonPath);
-        //                removeClick = _prefab.transform;
-        //                break;
-        //            }
-        //        }
-        //        GUILayout.EndHorizontal();
-        //    }
-        //    if (removeClick != null)
-        //    {
-        //        prefabs.Remove(removeClick.gameObject);
-        //    }
-        //    GUILayout.EndVertical();
-        //}
+        void AutoCreateScriptString(Transform _transform)
+        {
+            string[] objNameSplit = _transform.name.Split('_');
+            if (objNameSplit.Length>1)
+            {
+                string name_script = objNameSplit[1];
+                string name_component = objNameSplit[0];
+                var assembly = Assembly.Load("UnityEngine.UI");
+                Type componentType = assembly.GetType("UnityEngine.UI." + name_component); ;
+                if (componentType!=null && dic_stateScriptMap.ContainsKey(componentType))
+                {
+                    string state_script = string.Format(dic_stateScriptMap[componentType], name_script);
+                    string bind_script = string.Format(dic_bindScriptMap[componentType], name_script,AutoGetPathToRoot(_transform));
+                    if (string.IsNullOrEmpty(stateScriptString))
+                    {
+                        stateScriptString = state_script;
+                        bindScriptString = bind_script;
+                    }
+                    else {
+                        stateScriptString += ("\n" + state_script);
+                        bindScriptString += ("\n" + bind_script);
+                    }
+                }
+            }
+            if (_transform.childCount>0)
+            {
+                for (int i = 0; i < _transform.childCount; i++)
+                {
+                    Transform child = _transform.GetChild(i);
+                    AutoCreateScriptString(child);
+                }
+            }
+            Debug.Log(stateScriptString);
+        }
+
+        string AutoGetPathToRoot(Transform _childTrans) {
+            string path = _childTrans.name;
+            Transform targetTrans = _childTrans;
+            while (targetTrans.parent!=targetPrefab.transform)
+            {
+                targetTrans = targetTrans.parent;
+                path = targetTrans.name + "/" + path;
+            }
+            return path;
+        }
 
         #endregion
 
-        /// <summary>
-        /// 展示一下本地的动画曲线数据json文件
-        /// </summary>
-        public void WindowView_ShowJsonCacheData(JsonData _showJson)
-        {
-            //展示一下曲线保存结果
-            GUILayout.Label("曲线数据已经存在本地的动画片段：");
-            GUILayout.BeginVertical("HelpBox");
-            dragPoint = EditorGUILayout.BeginScrollView(dragPoint, false, true, GUILayout.Height(150));
-            if (_showJson == null || _showJson.IsObject == false)
-            {
-                GUILayout.Label("本地还没有动画片段");
-            }
-            else
-            {
-                string deleteKey = string.Empty;
-                foreach (KeyValuePair<string, JsonData> _curveJson in _showJson)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label(string.Format("动画片段：{0} ", _curveJson.Key), GUILayout.ExpandWidth(false));
-                    if (GUILayout.Button("删除", GUILayout.Width(50)))
-                    {
-                        //从json文件中删除该条记录
-                        deleteKey = _curveJson.Key;
-
-                    }
-                    GUILayout.EndHorizontal();
-                }
-                if (!string.IsNullOrEmpty(deleteKey))
-                {
-                    //((IDictionary)allCurveData_json).Remove(deleteKey);
-                    //CurveJsonSaveToLocal(allCurveData_json);
-                    ////拖动列表中也删除一下
-                    //AnimationClip dragAnim = animClips.Find((_animClip) =>
-                    //{
-                    //    return _animClip.name == deleteKey;
-                    //});
-                    //if (null != dragAnim)
-                    //{
-                    //    animClips.Remove(dragAnim);
-                    //}
-                }
-            }
-            EditorGUILayout.EndScrollView();
-            GUILayout.EndVertical();
-        }
-        Vector2 dragPoint = Vector2.zero;
-
 
         #region GUI生命周期
-        private void OnEnable()
+        void OnEnable()
         {
             dic_bindScriptMap = new Dictionary<Type, string>();
             dic_stateScriptMap = new Dictionary<Type, string>();
@@ -181,19 +125,32 @@ namespace DIY.Editor
         }
         void OnGUI()
         {
-            WindowView_AddSearchRangeLabel();
-            GUILayout.Space(30);
             if (!string.IsNullOrEmpty(bindScriptString))
             {
+                GUILayout.BeginVertical();
+                if (GUILayout.Button("清除生成语言"))
+                {
+                    bindScriptString = string.Empty;
+                    stateScriptString = string.Empty;
+
+                }
+                GUILayout.Box("声明:");
+                GUILayout.TextArea(stateScriptString);
+                GUILayout.Space(10);
+                GUILayout.Box("绑定:");
                 GUILayout.TextArea(bindScriptString);
+                GUILayout.EndVertical();
+            }
+            else {
+                WindowView_AddSearchRangeLabel();
             }
         }
-        #endregion
-        private void OnDestroy()
+        void OnDestroy()
         {
             targetPrefab = null;
             bindScriptString = string.Empty;
+            stateScriptString = string.Empty;
         }
+        #endregion
     }
 }
-
