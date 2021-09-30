@@ -26,7 +26,7 @@ namespace DIY.Editor
         private void AutoAddComponent(Type _type) {
             string className = _type.Name;
             dic_stateScriptMap.Add(_type, $"public {className} {className.ToLower()}_" + "{0};");
-            dic_bindScriptMap.Add(_type, $"{className.ToLower()}_" + "{0}" + $" = UIUtil.{className}.Bind(" + "{1}.transform.Find(\"" + $"{className.ToLower()}_" + "{0}\"));");
+            dic_bindScriptMap.Add(_type, $"{className.ToLower()}_" + "{0}" + $" = UIUtil.{className}.Bind(transform.Find("+"\"{1}\"));");
         }
 
         [MenuItem("Tools/组件工具/自动生成绑定脚本语言")]
