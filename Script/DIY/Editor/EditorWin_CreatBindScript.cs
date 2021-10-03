@@ -21,6 +21,13 @@ namespace DIY.Editor
             dic_bindScriptMap.Add(_type, $"{className.ToLower()}_" + "{0}" + $" = UIUtil.{className}.Bind(transform.Find("+"\"{1}\"));");
         }
 
+        private void AutoAddComponent(Type _type,string _utilScript)
+        {
+            string className = _type.Name;
+            dic_stateScriptMap.Add(_type, $"public {className} {className.ToLower()}_" + "{0};");
+            dic_bindScriptMap.Add(_type, $"{className.ToLower()}_" + "{0}" + $" = {_utilScript}.Bind(transform.Find(" + "\"{1}\"));");
+        }
+
         [MenuItem("Tools/组件工具/自动生成绑定脚本语言")]
         static void main()
         {
@@ -122,10 +129,8 @@ namespace DIY.Editor
             AutoAddComponent(typeof(Image));
             AutoAddComponent(typeof(Text));
             AutoAddComponent(typeof(Button));
-            AutoAddComponent(typeof(Trigger_ByDistance));
-            AutoAddComponent(typeof(Trigger_Door));
-            AutoAddComponent(typeof(Animator));
-            AutoAddComponent(typeof(Animation));
+            AutoAddComponent(typeof(Animator),"AnimatorUtil");
+            AutoAddComponent(typeof(Animation),"AnimationUtil");
         }
         void OnGUI()
         {
@@ -138,10 +143,14 @@ namespace DIY.Editor
                     stateScriptString = string.Empty;
 
                 }
+                GUI.color = Color.yellow;
                 GUILayout.Box("声明:");
+                GUI.color = Color.white;
                 GUILayout.TextArea(stateScriptString);
                 GUILayout.Space(10);
+                GUI.color = Color.yellow;
                 GUILayout.Box("绑定:");
+                GUI.color = Color.white;
                 GUILayout.TextArea(bindScriptString);
                 GUILayout.EndVertical();
             }
