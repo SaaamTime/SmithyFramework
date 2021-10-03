@@ -1,16 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 using UnityEditor;
-using System.IO;
-using LitJson;
-using System.Collections;
-using System.Text;
-using DIY.Json;
-using DIY.Asset;
-using DIY.UI;
 using System;
 using UnityEngine.UI;
-using System.Reflection;
 
 namespace DIY.Editor
 {
@@ -72,22 +64,30 @@ namespace DIY.Editor
             {
                 string name_script = objNameSplit[1];
                 string name_component = objNameSplit[0];
-                var assembly = Assembly.Load("UnityEngine.UI");
-                Type componentType = assembly.GetType("UnityEngine.UI." + name_component); ;
-                if (componentType!=null && dic_stateScriptMap.ContainsKey(componentType))
+                foreach (var item in dic_stateScriptMap)
                 {
-                    string state_script = string.Format(dic_stateScriptMap[componentType], name_script);
-                    string bind_script = string.Format(dic_bindScriptMap[componentType], name_script,AutoGetPathToRoot(_transform));
-                    if (string.IsNullOrEmpty(stateScriptString))
+                    if (item.Key.Name == name_component)
                     {
-                        stateScriptString = state_script;
-                        bindScriptString = bind_script;
-                    }
-                    else {
-                        stateScriptString += ("\n" + state_script);
-                        bindScriptString += ("\n" + bind_script);
+                        Type componentType = item.Key;
+                        if (componentType != null && dic_stateScriptMap.ContainsKey(componentType))
+                        {
+                            string state_script = string.Format(dic_stateScriptMap[componentType], name_script);
+                            string bind_script = string.Format(dic_bindScriptMap[componentType], name_script, AutoGetPathToRoot(_transform));
+                            if (string.IsNullOrEmpty(stateScriptString))
+                            {
+                                stateScriptString = state_script;
+                                bindScriptString = bind_script;
+                            }
+                            else
+                            {
+                                stateScriptString += ("\n" + state_script);
+                                bindScriptString += ("\n" + bind_script);
+                            }
+                            break;
+                        }
                     }
                 }
+                
             }
             if (_transform.childCount>0)
             {
@@ -122,6 +122,10 @@ namespace DIY.Editor
             AutoAddComponent(typeof(Image));
             AutoAddComponent(typeof(Text));
             AutoAddComponent(typeof(Button));
+            AutoAddComponent(typeof(Trigger_ByDistance));
+            AutoAddComponent(typeof(Trigger_Door));
+            AutoAddComponent(typeof(Animator));
+            AutoAddComponent(typeof(Animation));
         }
         void OnGUI()
         {

@@ -7,6 +7,7 @@ namespace DIY.UI
     public static class UIUtil
     {
 
+
         public static JsonData AutoBindNameTree(Transform _transRoot,bool _isChild=false) {
             JsonData nameTree = new JsonData();
             if (_transRoot.childCount > 0)
