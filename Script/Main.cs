@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Main : MonoBehaviour
 {
-    public MotorCtrl role;
+    public AliceInput role;
     private void Awake()
     {
         

@@ -18,9 +18,6 @@ namespace DIY.UI
         private void Awake()
         {
             Init();
-            JsonData jd = JsonUtil.ReadJson("Script", "UIMapTest");
-
-
         }
     }
 }
