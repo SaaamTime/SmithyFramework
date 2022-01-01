@@ -19,6 +19,7 @@ public class Clock : MonoBehaviour
     public static Clock Instance;
 
     public bool alive = true;
+
     #region 生命周期处理
     private void Awake()
     {
@@ -99,7 +100,6 @@ public class Clock : MonoBehaviour
         }
     }
     #endregion
-
 
     private void _Launch()
     {

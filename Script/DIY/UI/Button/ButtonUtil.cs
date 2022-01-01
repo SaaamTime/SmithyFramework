@@ -1,16 +1,15 @@
 ﻿using UnityEngine.UI;
 using UnityEngine;
-using Button_U3D = UnityEngine.UI.Button;
 using System;
 using UnityEngine.Events;
 
-namespace DIY.UI.Button
+namespace DIY.UI
 {
-    public static class ButtonUtil
+    public  class ButtonUtil
     {
-        public static Button_U3D Bind(Transform _buttonTrans, UnityAction _buttonEvent)
+        public static Button Bind(Transform _buttonTrans, UnityAction _buttonEvent)
         {
-            Button_U3D button = _buttonTrans.GetComponent<Button_U3D>();
+            Button button = _buttonTrans.GetComponent<Button>();
             if (_buttonEvent != null)
             {
                 button.onClick.RemoveAllListeners();

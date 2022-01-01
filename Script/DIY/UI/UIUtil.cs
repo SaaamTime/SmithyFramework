@@ -4,9 +4,11 @@ using System.Collections.Generic;
 
 namespace DIY.UI
 {
-    public static class UIUtil
+    public class UIUtil
     {
-
+        public static TextUtil Text;
+        public static ButtonUtil Button;
+        public static ImageUtil Image;
 
         public static JsonData AutoBindNameTree(Transform _transRoot,bool _isChild=false) {
             JsonData nameTree = new JsonData();

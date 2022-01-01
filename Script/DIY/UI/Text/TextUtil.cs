@@ -1,15 +1,14 @@
 ﻿using System;
 using UnityEngine;
 using UnityEngine.UI;
-using Text_U3D = UnityEngine.UI.Text;
 
-namespace DIY.UI.Text
+namespace DIY.UI
 {
-    public static class TextUtil
+    public  class TextUtil
     {
-        public static Text_U3D Bind(Transform _textTrans, bool _openRay = false)
+        public static Text Bind(Transform _textTrans, bool _openRay = false)
         {
-            Text_U3D text = _textTrans.GetComponent<Text_U3D>();
+            Text text = _textTrans.GetComponent<Text>();
             text.raycastTarget = _openRay;
             return text;
         }

@@ -6,32 +6,28 @@ using UnityEngine.UI;
 
 namespace DIY.Editor
 {
-    public class EditorWin_CreatBindScript : EditorWindow
+    public class EditorWin_CreatBindScript_Lua : EditorWindow
     {
         //需要生成曲线的动画片段索引
         public GameObject targetPrefab;
         public string bindScriptString;
-        public string stateScriptString;
         public Dictionary<Type, string> dic_bindScriptMap;
-        public Dictionary<Type, string> dic_stateScriptMap;
 
         private void AutoAddComponent(Type _type) {
             string className = _type.Name;
-            dic_stateScriptMap.Add(_type, $"public {className} {className.ToLower()}_" + "{0};");
-            dic_bindScriptMap.Add(_type, $"{className.ToLower()}_" + "{0}" + $" = UIUtil.{className}.Bind(transform.Find("+"\"{1}\"));");
+            dic_bindScriptMap.Add(_type, $"this.{className.ToLower()}_" + "{0}" + $" = UIUtil.{className}.Bind(transform.Find("+"\"{1}\"))");
         }
 
         private void AutoAddComponent(Type _type,string _utilScript)
         {
             string className = _type.Name;
-            dic_stateScriptMap.Add(_type, $"public {className} {className.ToLower()}_" + "{0};");
-            dic_bindScriptMap.Add(_type, $"{className.ToLower()}_" + "{0}" + $" = {_utilScript}.Bind(transform.Find(" + "\"{1}\"));");
+            dic_bindScriptMap.Add(_type, $"this.{className.ToLower()}_" + "{0}" + $" = {_utilScript}.Bind(transform.Find(" + "\"{1}\"))");
         }
 
-        [MenuItem("Tools/组件工具/自动生成绑定脚本语言_c#")]
+        [MenuItem("Tools/组件工具/自动生成绑定脚本语言_Lua")]
         static void main()
         {
-            EditorWindow.GetWindow<EditorWin_CreatBindScript>("自动生成绑定脚本语言");
+            EditorWindow.GetWindow<EditorWin_CreatBindScript_Lua>("自动生成绑定脚本语言");
             
             // Debug.Log(Application.dataPath);
         }
@@ -71,23 +67,20 @@ namespace DIY.Editor
             {
                 string name_script = objNameSplit[1];
                 string name_component = objNameSplit[0];
-                foreach (var item in dic_stateScriptMap)
+                foreach (var item in dic_bindScriptMap)
                 {
                     if (item.Key.Name == name_component)
                     {
                         Type componentType = item.Key;
-                        if (componentType != null && dic_stateScriptMap.ContainsKey(componentType))
+                        if (componentType != null && dic_bindScriptMap.ContainsKey(componentType))
                         {
-                            string state_script = string.Format(dic_stateScriptMap[componentType], name_script);
                             string bind_script = string.Format(dic_bindScriptMap[componentType], name_script, AutoGetPathToRoot(_transform));
-                            if (string.IsNullOrEmpty(stateScriptString))
+                            if (string.IsNullOrEmpty(bindScriptString))
                             {
-                                stateScriptString = state_script;
                                 bindScriptString = bind_script;
                             }
                             else
                             {
-                                stateScriptString += ("\n" + state_script);
                                 bindScriptString += ("\n" + bind_script);
                             }
                             break;
@@ -104,7 +97,6 @@ namespace DIY.Editor
                     AutoCreateScriptString(child);
                 }
             }
-            Debug.Log(stateScriptString);
         }
 
         string AutoGetPathToRoot(Transform _childTrans) {
@@ -125,7 +117,6 @@ namespace DIY.Editor
         void OnEnable()
         {
             dic_bindScriptMap = new Dictionary<Type, string>();
-            dic_stateScriptMap = new Dictionary<Type, string>();
             AutoAddComponent(typeof(Image));
             AutoAddComponent(typeof(Text));
             AutoAddComponent(typeof(Button));
@@ -140,14 +131,7 @@ namespace DIY.Editor
                 if (GUILayout.Button("清除生成语言"))
                 {
                     bindScriptString = string.Empty;
-                    stateScriptString = string.Empty;
-
                 }
-                GUI.color = Color.yellow;
-                GUILayout.Box("声明:");
-                GUI.color = Color.white;
-                GUILayout.TextArea(stateScriptString);
-                GUILayout.Space(10);
                 GUI.color = Color.yellow;
                 GUILayout.Box("绑定:");
                 GUI.color = Color.white;
@@ -162,7 +146,6 @@ namespace DIY.Editor
         {
             targetPrefab = null;
             bindScriptString = string.Empty;
-            stateScriptString = string.Empty;
         }
         #endregion
     }

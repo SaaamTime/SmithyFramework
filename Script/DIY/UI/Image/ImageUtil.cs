@@ -1,14 +1,13 @@
 ﻿using System;
 using UnityEngine.UI;
 using UnityEngine;
-using Image_U3D = UnityEngine.UI.Image;
 
-namespace DIY.UI.Image
+namespace DIY.UI
 {
-    public static class ImageUtil
+    public  class ImageUtil
     {
-        public static Image_U3D Bind(Transform _imageTrans, bool _openRay=false) {
-            Image_U3D image = _imageTrans.GetComponent<Image_U3D>();
+        public static Image Bind(Transform _imageTrans, bool _openRay=false) {
+            Image image = _imageTrans.GetComponent<Image>();
             image.raycastTarget = _openRay;
             return image;
         }

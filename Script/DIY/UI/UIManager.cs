@@ -28,6 +28,7 @@ namespace DIY.UI
         {
             //TODO:可能需要各个界面的清空与中断
             dic_panels.Clear();
+        
         }
 
         protected override void Init()

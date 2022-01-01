@@ -12,7 +12,6 @@ namespace DIY
         public static void AutoBindComponents(UIPanel _panel) { 
             //根据Json路径，昂绑定指定组件
             
-        
         }
     }
 }

@@ -20,6 +20,10 @@ namespace DIY.Asset
             //Debug.Log("Lua的Android路径（更改前）：" + path);
             //path = path.Replace(Application.streamingAssetsPath, Application.persistentDataPath);
             //Debug.Log("Lua的Android路径（更改后）：" + path);
+            //按照路径加载ab包
+            AssetBundle asset = AssetBundle.LoadFromFile(Path.Combine(Application.streamingAssetsPath, _path));
+            var asset_gob = asset.LoadAsset<T>(_path);
+            return GameObject.Instantiate(asset_gob);
 #endif
         }
 

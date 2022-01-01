@@ -1,0 +1,11 @@
+ManifestFileVersion: 0
+CRC: 4214281062
+AssetBundleManifest:
+  AssetBundleInfos:
+    Info_0:
+      Name: gameobject
+      Dependencies:
+        Dependency_0: wamp
+    Info_1:
+      Name: wamp
+      Dependencies: {}
