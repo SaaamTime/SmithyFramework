@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 namespace DIY.UI
 {
-    public  class TextUtil
+    public  class TextUtil: SmithyFramework.Base.SingleClassBase<TextUtil>
     {
         public static Text Bind(Transform _textTrans, bool _openRay = false)
         {

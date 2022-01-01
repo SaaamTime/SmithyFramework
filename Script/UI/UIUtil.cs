@@ -6,9 +6,9 @@ namespace DIY.UI
 {
     public class UIUtil
     {
-        public static TextUtil Text;
-        public static ButtonUtil Button;
-        public static ImageUtil Image;
+        public static TextUtil Text = TextUtil.Instance;
+        public static ButtonUtil Button = ButtonUtil.Instance;
+        public static ImageUtil Image = ImageUtil.Instance;
 
         public static JsonData AutoBindNameTree(Transform _transRoot,bool _isChild=false) {
             JsonData nameTree = new JsonData();
