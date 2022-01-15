@@ -57,8 +57,6 @@ public class NL_ObjectPlacementTool_window : EditorWindow {
 	[SerializeField]
 	private GameObject PhysicsPlacerObj;
 	[SerializeField]
-	private NL_PhysicsPlacer PhysicsPlacer;
-	[SerializeField]
 	private bool allowSpawnBtn = false;
 
 	public Vector3 initCamPos;
@@ -866,9 +864,7 @@ public class NL_ObjectPlacementTool_window : EditorWindow {
 	}
 
 	void OnDestroy(){
-		if(GameObject.Find ("PhysicsPlacer") != null){
-			DestroyImmediate (GameObject.Find ("PhysicsPlacer"));
-		}
+		
 		EditorPrefs.SetInt ("CreatedObjectsCount", 0);
 	}
 
