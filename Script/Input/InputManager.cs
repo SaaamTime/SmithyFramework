@@ -40,6 +40,13 @@ public class InputManager  : BaseManager<InputManager>
         }
     }
 
+    public void AddEvent_EmptyKeyCode(Action emptyKeyCodeEvent) {
+        if (!m_list_noKeycodeEvent.Contains(emptyKeyCodeEvent))
+        {
+            m_list_noKeycodeEvent.Add(emptyKeyCodeEvent);
+        }
+    }
+
     public void ClearAllKeyCode() {
         m_dic_keycodeEvents.Clear();
     }

@@ -14,6 +14,7 @@ namespace DIY.Base
         {
             Instance = GetComponent<T>();
             GameObject.DontDestroyOnLoad(gameObject);
+            Init();
         }
     }
 }
