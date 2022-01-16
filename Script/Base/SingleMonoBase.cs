@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace SmithyFramework.Base
+namespace DIY.Base
 {
     public abstract class SingleMonoBase<T> : MonoBehaviour where T:Component
     {

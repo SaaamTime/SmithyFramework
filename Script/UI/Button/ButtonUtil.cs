@@ -5,7 +5,7 @@ using UnityEngine.Events;
 
 namespace DIY.UI
 {
-    public  class ButtonUtil:SmithyFramework.Base.SingleClassBase<ButtonUtil>
+    public  class ButtonUtil:DIY.Base.SingleClassBase<ButtonUtil>
     {
         public static Button Bind(Transform _buttonTrans, UnityAction _buttonEvent)
         {

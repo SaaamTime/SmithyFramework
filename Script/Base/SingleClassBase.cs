@@ -1,4 +1,4 @@
-﻿namespace SmithyFramework.Base
+﻿namespace DIY.Base
 {
     public abstract class SingleClassBase<T> : System.IDisposable where T : new()
     {
