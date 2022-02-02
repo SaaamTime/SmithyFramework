@@ -6,7 +6,7 @@ using UnityEngine;
 
 public static class AnimExtension
 {
-    public static void Play_Forward(this Animation _animation, string _name=null,float _progress=0,Action _endEvent=null) {
+    public static void Play_Forward(this Animation _animation, string _name=null,float _progress=0,Action _endEvent=null,float lengthRate = 1f) {
         if (string.IsNullOrEmpty(_name))
         {
             _name = _animation.clip.name;
@@ -17,10 +17,10 @@ public static class AnimExtension
         _animation.Play(_name);
         if (_endEvent!=null)
         {
-            Clock.Instance.DoDelay(animState.name + _animation.gameObject.name, animState.length, _endEvent);
+            Clock.Instance.DoDelay(animState.name + _animation.gameObject.name, animState.length*lengthRate, _endEvent);
         }
     }
-    public static void Play_Back(this Animation _animation,string _name=null,float _progress = 1, Action _endEvent = null) {
+    public static void Play_Back(this Animation _animation,string _name=null,float _progress = 1, Action _endEvent = null, float lengthRate = 1f) {
         if (string.IsNullOrEmpty(_name))
         {
             _name = _animation.clip.name;
@@ -31,7 +31,7 @@ public static class AnimExtension
         _animation.Play(_name);
         if (_endEvent != null)
         {
-            Clock.Instance.DoDelay(animState.name + _animation.gameObject.name, animState.length, _endEvent);
+            Clock.Instance.DoDelay(animState.name + _animation.gameObject.name, animState.length*lengthRate, _endEvent);
         }
     }
     public static void PlayJumpToEnd(this Animation _animation,bool _isRewind = false,string _name=null) {

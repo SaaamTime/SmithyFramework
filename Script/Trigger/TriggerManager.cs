@@ -26,7 +26,7 @@ namespace DIY.Trigger
         }
 
         public void AddTarget(Transform target) {
-            if (list_checkList.Contains(target))
+            if (!list_checkList.Contains(target))
             {
                 list_checkList.Add(target);
             }
@@ -53,6 +53,7 @@ namespace DIY.Trigger
         protected override void Init()
         {
             triggers_byDistance = new List<Trigger_ByDistance>();
+            list_checkList = new List<Transform>();
         }
 
         public override void Reset()

@@ -6,7 +6,8 @@ using DIY;
 using DIY.Base;
 using System.Collections.Generic;
 
-public class InputManager  : BaseManager<InputManager>
+
+public class InputManager : BaseManager<InputManager>
 {
     private Dictionary<KeyCode, List<Action>> m_dic_keycodeEvents;
     private List<Action> m_list_noKeycodeEvent;
@@ -16,7 +17,8 @@ public class InputManager  : BaseManager<InputManager>
         m_list_noKeycodeEvent = new List<Action>();
     }
 
-    public void AddKeyCodeEvent(KeyCode keycode,Action keycodeEvent) {
+    public void AddKeyCodeEvent(KeyCode keycode, Action keycodeEvent)
+    {
         if (!m_dic_keycodeEvents.ContainsKey(keycode))
         {
             m_dic_keycodeEvents[keycode] = new List<Action>();
@@ -25,29 +27,33 @@ public class InputManager  : BaseManager<InputManager>
         keycodeList.Add(keycodeEvent);
     }
 
-    public void RemoveKeyCodeEvent(KeyCode keycode,Action keycodeEvent) {
+    public void RemoveKeyCodeEvent(KeyCode keycode, Action keycodeEvent)
+    {
         List<Action> keycodeList = m_dic_keycodeEvents[keycode];
-        if (keycodeList!=null && keycodeList.Contains(keycodeEvent))
+        if (keycodeList != null && keycodeList.Contains(keycodeEvent))
         {
             keycodeList.Remove(keycodeEvent);
         }
     }
 
-    public void ClearKeyCodeEvent(KeyCode keycode) {
+    public void ClearKeyCodeEvent(KeyCode keycode)
+    {
         if (m_dic_keycodeEvents.ContainsKey(keycode))
         {
             m_dic_keycodeEvents[keycode].Clear();
         }
     }
 
-    public void AddEvent_EmptyKeyCode(Action emptyKeyCodeEvent) {
+    public void AddEvent_EmptyKeyCode(Action emptyKeyCodeEvent)
+    {
         if (!m_list_noKeycodeEvent.Contains(emptyKeyCodeEvent))
         {
             m_list_noKeycodeEvent.Add(emptyKeyCodeEvent);
         }
     }
 
-    public void ClearAllKeyCode() {
+    public void ClearAllKeyCode()
+    {
         m_dic_keycodeEvents.Clear();
     }
 
@@ -59,7 +65,7 @@ public class InputManager  : BaseManager<InputManager>
     private void Update()
     {
         //按鍵监听
-        if (Input.anyKey)
+        if (UnityEngine.Input.anyKey)
         {
             foreach (var item in m_dic_keycodeEvents)
             {
@@ -72,15 +78,17 @@ public class InputManager  : BaseManager<InputManager>
                 }
             }
         }
-        else {
+        else
+        {
             foreach (var item in m_list_noKeycodeEvent)
             {
                 item.Invoke();
             }
         }
-        
+
         //鼠标监听
     }
 
-    
+
 }
+

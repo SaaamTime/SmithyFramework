@@ -10,7 +10,7 @@ namespace DIY.Trigger
     {
         // Start is called before the first frame update
         public float distance = 1.5f;
-        public Animation animation;
+        public Animation animation;//如果没有动画播放，可以不关注该组件
         public State_TriggerByDistance state;
         public abstract void Event_InRangeState();
         public abstract void Event_Do();

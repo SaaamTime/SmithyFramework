@@ -5,9 +5,9 @@ using UnityEngine.Events;
 
 namespace DIY.UI
 {
-    public  class ButtonUtil:DIY.Base.SingleClassBase<ButtonUtil>
+    public class ButtonUtil:DIY.Base.SingleClassBase<ButtonUtil>
     {
-        public static Button Bind(Transform _buttonTrans, UnityAction _buttonEvent)
+        public Button Bind(Transform _buttonTrans, UnityAction _buttonEvent)
         {
             Button button = _buttonTrans.GetComponent<Button>();
             if (_buttonEvent != null)

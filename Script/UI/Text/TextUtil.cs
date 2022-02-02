@@ -4,9 +4,9 @@ using UnityEngine.UI;
 
 namespace DIY.UI
 {
-    public  class TextUtil: DIY.Base.SingleClassBase<TextUtil>
+    public class TextUtil: DIY.Base.SingleClassBase<TextUtil>
     {
-        public static Text Bind(Transform _textTrans, bool _openRay = false)
+        public Text Bind(Transform _textTrans, bool _openRay = false)
         {
             Text text = _textTrans.GetComponent<Text>();
             text.raycastTarget = _openRay;

@@ -23,5 +23,14 @@ namespace DIY.UI
             return nameTree;
         }
 
+        public static void SetArchor_MaxView(Transform target) {
+            RectTransform rect = target as RectTransform;
+            rect.anchorMin = Vector2.one;
+            rect.anchorMin = Vector2.zero;
+            rect.pivot = Vector2.one * 0.5f;
+            rect.offsetMax = Vector2.zero;
+            rect.offsetMin = Vector2.zero;
+        }
+
     }
 }
