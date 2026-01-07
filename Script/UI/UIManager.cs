@@ -41,7 +41,7 @@ namespace DIY.UI
             InitPanel<UIPanel_SlideTip>(UIPanel_SlideTip.config);
         }
 
-        protected override void Init()
+        public override void Init()
         {
             dic_panels = new Dictionary<string, UIPanel>();
             dic_panels_always = new Dictionary<string, UIPanel>();

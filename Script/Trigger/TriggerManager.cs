@@ -50,7 +50,7 @@ namespace DIY.Trigger
             }
         }
 
-        protected override void Init()
+        public override void Init()
         {
             triggers_byDistance = new List<Trigger_ByDistance>();
             list_checkList = new List<Transform>();

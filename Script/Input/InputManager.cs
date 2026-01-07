@@ -11,7 +11,7 @@ public class InputManager : BaseManager<InputManager>
 {
     private Dictionary<KeyCode, List<Action>> m_dic_keycodeEvents;
     private List<Action> m_list_noKeycodeEvent;
-    protected override void Init()
+    public override void Init()
     {
         m_dic_keycodeEvents = new Dictionary<KeyCode, List<Action>>();
         m_list_noKeycodeEvent = new List<Action>();
