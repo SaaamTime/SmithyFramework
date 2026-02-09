@@ -4,7 +4,8 @@ using System.Collections.Generic;
 using System.Text;
 using UnityEngine;
 
-public static class AnimExtension
+namespace DIY.Anim{
+    public static class AnimExtension
 {
     public static void Play_Forward(this Animation _animation, string _name=null,float _progress=0,Action _endEvent=null,float lengthRate = 1f) {
         if (string.IsNullOrEmpty(_name))
@@ -243,5 +244,7 @@ public static class AnimExtension
         return state;
     }
     #endregion
+
+}
 
 }
