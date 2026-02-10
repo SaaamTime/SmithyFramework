@@ -1,30 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using DIY.Base;
 
 namespace DIY.Events
 {
-    public class EventManager
+    public class EventManager:SingleClassBase<EventManager>
     {
-        private static EventManager _instance;
-        public static EventManager Instance
-        {
-            get
-            {
-                if (_instance == null)
-                {
-                    _instance = new EventManager();
-                }
-                return _instance;
-            }
-        }
 
         private Dictionary<string, Action<string>> actions_string;
         private Dictionary<string, Action> actions_empty;
 
-        private EventManager() {
+        protected override void Init()
+        {
             actions_string = new Dictionary<string, Action<string>>();
             actions_empty = new Dictionary<string, Action>();
         }
@@ -80,8 +69,6 @@ namespace DIY.Events
         public void Destory() {
             Clear();
         }
-
-
     }
 
 }

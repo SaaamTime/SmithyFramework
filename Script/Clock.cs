@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
@@ -198,6 +197,12 @@ public class Clock : MonoBehaviour
         FrameRoll countdown = new FrameRoll(_name, _delayTime);
         countdown.BindEvent_End(_event);
         queue_frameRoll.Enqueue(countdown);
+    }
+
+    public void DoDelay(float _delayTime, Action _event)
+    {
+        string randomName = "Delay_" + DateTimeOffset.UtcNow.ToUnixTimeMilliseconds().ToString();
+        DoDelay(randomName, _delayTime, _event);
     }
 
     public void PreventDelay(string _name) { 
