@@ -12,5 +12,10 @@ namespace DIY.UI
             text.raycastTarget = _openRay;
             return text;
         }
+
+        protected override void Init()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

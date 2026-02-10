@@ -17,5 +17,10 @@ namespace DIY.UI
             }
             return button;
         }
+
+        protected override void Init()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

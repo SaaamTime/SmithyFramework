@@ -11,5 +11,10 @@ namespace DIY.UI
             image.raycastTarget = _openRay;
             return image;
         }
+
+        protected override void Init()
+        {
+            throw new NotImplementedException();
+        }
     }
 }
