@@ -13,7 +13,11 @@
             }
         }
 
-        protected SingleClassBase() { }
+        protected abstract void Init();
+
+        protected SingleClassBase() { 
+            Init();
+        }
 
         public void Dispose()
         {
